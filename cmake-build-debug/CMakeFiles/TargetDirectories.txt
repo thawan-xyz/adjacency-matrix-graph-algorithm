@@ -1,0 +1,3 @@
+C:/Users/Thawan/CLionProjects/adjacency-matrix-graph-algorithm/cmake-build-debug/CMakeFiles/adjacency_matrix_graph_algorithm.dir
+C:/Users/Thawan/CLionProjects/adjacency-matrix-graph-algorithm/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/Thawan/CLionProjects/adjacency-matrix-graph-algorithm/cmake-build-debug/CMakeFiles/rebuild_cache.dir
