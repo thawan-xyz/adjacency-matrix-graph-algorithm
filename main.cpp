@@ -1,29 +1,64 @@
 #include <iostream>
+#include <queue>
+#include <stack>
 #include <vector>
+#define array vector
 using namespace std;
 
-class Adjacency_Matrix_Graph {
+// @author: Thawan Ribeiro, 2024-06-22
+
+class Graph {
 private:
     const int VERTICES;
     int edges;
-    vector<vector<int>> matrix;
-    vector<bool> marked;
+    array<array<int>> matrix;
+    array<bool> marked;
 
-    void depth_first_search(int v) {
+    void depth_first_search(int v, array<int> &result) {
+        set_mark(v, true);
+
+        result.push_back(v);
+
+        int w = get_first_adjacent(v);
+        while (w < VERTICES) {
+            if (get_mark(w) == false) {
+                depth_first_search(w, result);
+            }
+            w = get_next_adjacent(v, w);
+        }
     }
 
-    void breadth_first_search(int v) {
+    void breadth_first_search(int v, array<int> &result) {
+        queue<int> queue;
+        queue.push(v);
+
+        set_mark(v, true);
+        while (!queue.empty()) {
+            v = queue.front();
+            queue.pop();
+
+            result.push_back(v);
+
+            int w = get_first_adjacent(v);
+            while (w < VERTICES) {
+                if (get_mark(w) == false) {
+                    set_mark(w, true);
+                    queue.push(w);
+                }
+                w = get_next_adjacent(v, w);
+            }
+        }
     }
 
 public:
-    Adjacency_Matrix_Graph(const int n) : VERTICES(n), edges(0) {
+    Graph(const int n) : VERTICES(n), edges(0) {
         matrix.assign(VERTICES, vector<int>(VERTICES, 0));
         marked.assign(VERTICES, false);
     }
 
-    ~Adjacency_Matrix_Graph() = default;
+    ~Graph() = default;
 
-    void set_edge(const int v, const int w, const int x) {
+    void set_edge(const int v, const int w, const int x = 1) {
         if (matrix[v][w] == 0) {
             edges++;
         }
@@ -48,7 +83,7 @@ public:
         return matrix[v][w];
     }
 
-    int get_adjacent(const int v) const {
+    int get_first_adjacent(const int v) const {
         for (int w = 0; w < VERTICES; ++w) {
             if (matrix[v][w] != 0) {
                 return w;
@@ -57,8 +92,17 @@ public:
         return VERTICES;
     }
 
-    int get_next(const int v, const int p) const {
+    int get_next_adjacent(const int v, const int p) const {
         for (int w = p + 1; w < VERTICES; ++w) {
+            if (matrix[v][w] != 0) {
+                return w;
+            }
+        }
+        return VERTICES;
+    }
+
+    int get_last_adjacent(const int v) const {
+        for (int w = VERTICES - 1; w >= 0; --w) {
             if (matrix[v][w] != 0) {
                 return w;
             }
@@ -82,24 +126,30 @@ public:
         return edges;
     }
 
-    void dfs_traversal() {
+    array<int> dfs_traversal() {
         marked.assign(VERTICES, false);
 
+        array<int> result;
         for (int v = 0; v < VERTICES; ++v) {
             if (get_mark(v) == false) {
-                depth_first_search(v);
+                depth_first_search(v, result);
             }
         }
+        
+        return result;
     }
 
-    void bfs_traversal() {
+    array<int> bfs_traversal() {
         marked.assign(VERTICES, false);
 
+        array<int> result;
         for (int v = 0; v < VERTICES; ++v) {
             if (get_mark(v) == false) {
-                breadth_first_search(v);
+                breadth_first_search(v, result);
             }
         }
+        
+        return result;
     }
 };
 
