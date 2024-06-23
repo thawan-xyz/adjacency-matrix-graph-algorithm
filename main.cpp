@@ -52,7 +52,7 @@ private:
 
 public:
     Graph(const int n) : VERTICES(n), edges(0) {
-        matrix.assign(VERTICES, vector<int>(VERTICES, 0));
+        matrix.assign(VERTICES, array<int>(VERTICES, 0));
         marked.assign(VERTICES, false);
     }
 
